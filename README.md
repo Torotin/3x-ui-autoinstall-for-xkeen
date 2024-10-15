@@ -85,25 +85,12 @@
 
 # Примеры использования
 
-1. **Базовая установка в интерактивном режиме**:
-   ```bash
-    sudo ./main.sh
-    ```
-
-2. **Базовая установка без домена**:
-    ```bash
-    sudo ./main.sh -u admin -p mypassword -l uiuser -s uipassword -r "ssh-rsa AAAAB3NzaC1yc2..." -t https://example.com
-    ```
-
-3. **Установка с указанием домена**:
-    ```bash
-    sudo ./main.sh -u admin -p mypassword -l uiuser -s uipassword -r "ssh-rsa AAAAB3NzaC1yc2..." -d mydomain.com -t https://example.com
-    ```
-
-4. **Принудительная перезагрузка и обновление пакетов**:
-    ```bash
-    sudo ./main.sh -u admin -p mypassword -l uiuser -s uipassword -r "ssh-rsa AAAAB3NzaC1yc2..." -d mydomain.com -t https://example.com -R -U
-    ```
+| **Описание**                                 | **Команда**                                                                                                                                                     |
+|----------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Базовая установка в интерактивном режиме**  | `sudo ./main.sh`                                                                                                                                                |
+| **Базовая установка без домена**             | `sudo ./main.sh -u admin -p mypassword -l uiuser -s uipassword -r "ssh-rsa AAAAB3NzaC1yc2..." -t https://example.com`                                            |
+| **Установка с указанием домена**             | `sudo ./main.sh -u admin -p mypassword -l uiuser -s uipassword -r "ssh-rsa AAAAB3NzaC1yc2..." -d mydomain.com -t https://example.com`                            |
+| **Принудительная перезагрузка и обновление пакетов** | `sudo ./main.sh -u admin -p mypassword -l uiuser -s uipassword -r "ssh-rsa AAAAB3NzaC1yc2..." -d mydomain.com -t https://example.com -R -U`                   |
 
 
 # Описание модулей
