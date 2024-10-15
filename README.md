@@ -50,9 +50,10 @@
 
 | Шаг | Описание                                     | Команда                                                    |
 |-----|----------------------------------------------|------------------------------------------------------------|
-| 1   | Клонируйте репозиторий или скачайте скрипт   | `git clone https://github.com/Torotin/3x-ui-autoinstall-for-xkeen.git` <br> `cd 3x-ui-autoinstall-for-xkeen` |
-| 2   | Сделайте скрипт исполняемым                  | `chmod +x main.sh`                                          |
-| 3   | Запустите скрипт с необходимыми параметрами  | `sudo ./main.sh`                                            |
+| 1   | Клонируйте репозиторий или скачайте скрипт   | `git clone https://github.com/Torotin/3x-ui-autoinstall-for-xkeen.git`|
+| 2   | Перейдите в загруженный каталог                | `cd 3x-ui-autoinstall-for-xkeen`                            |
+| 3   | Сделайте скрипт исполняемым                  | `chmod +x main.sh`                                          |
+| 4   | Запустите скрипт (можно использовать доп.параметры)  | `sudo ./main.sh`                                            |
 
 
 # Использование
@@ -87,26 +88,26 @@
 
 | **Описание**                                 | **Команда**                                                                                                                                                     |
 |----------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **Базовая установка в интерактивном режиме**  | `sudo ./main.sh`                                                                                                                                                |
-| **Базовая установка без домена**             | `sudo ./main.sh -u admin -p mypassword -l uiuser -s uipassword -r "ssh-rsa AAAAB3NzaC1yc2..." -t https://example.com`                                            |
-| **Установка с указанием домена**             | `sudo ./main.sh -u admin -p mypassword -l uiuser -s uipassword -r "ssh-rsa AAAAB3NzaC1yc2..." -d mydomain.com -t https://example.com`                            |
-| **Принудительная перезагрузка и обновление пакетов** | `sudo ./main.sh -u admin -p mypassword -l uiuser -s uipassword -r "ssh-rsa AAAAB3NzaC1yc2..." -d mydomain.com -t https://example.com -R -U`                   |
+| Базовая установка c запросом параметров у пользователя  | `sudo ./main.sh`|
+| Базовая установка без домена           | `sudo ./main.sh -u admin -p mypassword -l uiuser -s uipassword -r "ssh-rsa AAAAB3NzaC1yc2..." -t https://example.com`|
+| Установка с указанием домена| `sudo ./main.sh -u admin -p mypassword -l uiuser -s uipassword -r "ssh-rsa AAAAB3NzaC1yc2..." -d mydomain.com -t https://example.com`|
+| Принудительная перезагрузка и обновление пакетов | `sudo ./main.sh -u admin -p mypassword -l uiuser -s uipassword -r "ssh-rsa AAAAB3NzaC1yc2..." -d mydomain.com -t https://example.com -R -U`|
 
 
 # Описание модулей
 
 | **Название модуля**       | **Описание**                                               |
 |---------------------------|------------------------------------------------------------|
-| `variables.sh`             | Содержит глобальные переменные, необходимые для работы.    |
-| `utils.sh`                 | Вспомогательные функции для логирования и проверки команд. |
-| `system_checks.sh`         | Проверяет системные ресурсы и подключение к интернету.     |
-| `user_input.sh`            | Обрабатывает ввод данных от пользователя.                 |
-| `user_setup.sh`            | Создает пользователя, настраивает SSH и Fail2Ban.         |
-| `service_setup.sh`         | Устанавливает сервисы, такие как 3X-UI и Caddy.           |
-| `network_optimization.sh`  | Включает оптимизацию сети с помощью BBR.                  |
-| `firewall_setup.sh`        | Настраивает брандмауэр и открывает порты.                 |
-| `api_functions.sh`         | Функции для работы с API 3X-UI.                           |
-| `html_create.sh`           | Создает статическую HTML-страницу.                        |
+| [`variables.sh`](modules/variables.sh)             | Содержит глобальные переменные, необходимые для работы.    |
+| [`utils.sh`](modules/utils.sh)                 | Вспомогательные функции для логирования и проверки команд. |
+| [`system_checks.sh`](modules/system_checks.sh)         | Проверяет системные ресурсы и подключение к интернету.     |
+| [`user_input.sh`](modules/user_input.sh)            | Обрабатывает ввод данных от пользователя.                 |
+| [`user_setup.sh`](modules/user_setup.sh)            | Создает пользователя, настраивает SSH и Fail2Ban.         |
+| [`service_setup.sh`](modules/service_setup.sh)         | Устанавливает сервисы, такие как 3X-UI и Caddy.           |
+| [`network_optimization.sh`](modules/network_optimization.sh)  | Включает оптимизацию сетевых настроек.                  |
+| [`firewall_setup.sh`](modules/firewall_setup.sh)        | Настраивает брандмауэр и открывает порты.                 |
+| [`api_functions.sh`](modules/api_functions.sh)         | Функции для работы с API 3X-UI.                           |
+| [`html_create.sh`](modules/html_create.sh)           | Создает статическую HTML-страницу.                        |
 
 
 # Рекомендации по безопасности
