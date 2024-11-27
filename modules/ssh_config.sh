@@ -70,9 +70,9 @@ configure_fail2ban() {
     backup_file "/etc/fail2ban/jail.local"
 
     # Настраиваемые параметры (можно задавать извне)
-    local max_retry="${max_retry:-3}"
-    local ban_time="${ban_time:-43200}"
-    local find_time="${find_time:-600}"
+    local max_retry="${fail2ban_max_retry:-3}"
+    local ban_time="${fail2ban_ban_time:-43200}"
+    local find_time="${fail2ban_find_time:-600}"
 
     log "INFO" "Конфигурация Fail2Ban: порт SSH=$SSH_PORT, maxretry=$max_retry, bantime=$ban_time, findtime=$find_time."
 
@@ -86,9 +86,62 @@ logpath = %(sshd_log)s
 backend = %(sshd_backend)s
 action = iptables[name=SSH, port=ssh, protocol=tcp]
 maxretry = $max_retry
-bantime = $ban_time
+bantime = ${ban_time}m
 findtime = $find_time
 EOF
+
+    # Добавление настроек для IP-лимитов (на основе create_iplimit_jails)
+    local iplimit_log_path="/var/log/iplimit.log"  # Убедитесь, что путь корректен
+    local iplimit_banned_log_path="/var/log/iplimit-banned.log"  # Путь для журнала заблокированных IP
+
+    # Создание jail для 3x-ipl
+    cat << EOF > /etc/fail2ban/jail.d/3x-ipl.conf
+[3x-ipl]
+enabled = true
+backend = auto
+filter = 3x-ipl
+action = 3x-ipl
+logpath = $iplimit_log_path
+maxretry = $max_retry
+bantime = ${ban_time}m
+findtime = $find_time
+EOF
+
+    # Создание фильтра для 3x-ipl
+    cat << EOF > /etc/fail2ban/filter.d/3x-ipl.conf
+[Definition]
+datepattern = ^%%Y/%%m/%%d %%H:%%M:%%S
+failregex   = \[LIMIT_IP\]\s*Email\s*=\s*<F-USER>.+</F-USER>\s*\|\|\s*SRC\s*=\s*<ADDR>
+ignoreregex =
+EOF
+
+    # Создание действия для 3x-ipl
+    cat << EOF > /etc/fail2ban/action.d/3x-ipl.conf
+[INCLUDES]
+before = iptables-allports.conf
+
+[Definition]
+actionstart = <iptables> -N f2b-<name>
+              <iptables> -A f2b-<name> -j <returntype>
+              <iptables> -I <chain> -p <protocol> -j f2b-<name>
+
+actionstop = <iptables> -D <chain> -p <protocol> -j f2b-<name>
+             <actionflush>
+             <iptables> -X f2b-<name>
+
+actioncheck = <iptables> -n -L <chain> | grep -q 'f2b-<name>[ \t]'
+
+actionban = <iptables> -I f2b-<name> 1 -s <ip> -j <blocktype>
+            echo "\$(date +"%%Y/%%m/%%d %%H:%%M:%%S")   BAN   [Email] = <F-USER> [IP] = <ip> banned for <bantime> seconds." >> $iplimit_banned_log_path
+
+actionunban = <iptables> -D f2b-<name> -s <ip> -j <blocktype>
+              echo "\$(date +"%%Y/%%m/%%d %%H:%%M:%%S")   UNBAN   [Email] = <F-USER> [IP] = <ip> unbanned." >> $iplimit_banned_log_path
+
+[Init]
+EOF
+
+    log "INFO" "Правила IP-лимитов добавлены с bantime = ${bantime} минут."
+
     local fail2banconf="/etc/fail2ban/fail2ban.conf"
     local allowipv6="allowipv6 = auto"
 
@@ -116,3 +169,4 @@ EOF
 
     log "INFO" "Fail2Ban настроен и успешно запущен."
 }
+

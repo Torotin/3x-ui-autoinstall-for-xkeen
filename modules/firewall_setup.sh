@@ -122,7 +122,7 @@ ufw_pingdisable() {
     # Создаем резервную копию файла before.rules
     backup_file "$UFW_BEFORERULES_FILE"
     
-    # Закомментируем строки, связанные с ICMP в before.rules
+    # Комментируем строки, связанные с ICMP в before.rules
     log "INFO" "Комментируем строки, разрешающие ICMP-запросы в $UFW_BEFORERULES_FILE"
     sed -i '/-A ufw-before-input -p icmp --icmp-type destination-unreachable -j ACCEPT/s/^/#/' "$UFW_BEFORERULES_FILE"
     sed -i '/-A ufw-before-input -p icmp --icmp-type time-exceeded -j ACCEPT/s/^/#/' "$UFW_BEFORERULES_FILE"

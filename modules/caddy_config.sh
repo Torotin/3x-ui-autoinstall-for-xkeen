@@ -120,6 +120,10 @@ generate_reverse_proxy_block() {
         header_up X-Real-IP {remote_host}
         header_up Range {header.Range}
         header_up If-Range {header.If-Range}
+        header {
+            X-WebRTC-Disable: true
+            Content-Security-Policy: "default-src 'self'; script-src 'self'; connect-src 'self'; media-src 'self';"
+        }
     }
 
     tls {

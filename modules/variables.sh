@@ -7,7 +7,7 @@ MAIN_IP=$(curl -s ipinfo.io/ip)
 
 # Путь к скрипту баннера SSH
 banner_script_path="/etc/profile.d/ssh_banner.sh"
-geoupdate_cron_sh="/usr/local/x-ui/bin/geoupdate.sh"
+geoupdate_cron_sh="/usr/local/x-ui/geoupdate.sh"
 XUI_CONFIG_FILE="/usr/local/x-ui/bin/config.json"
 UFW_BEFORERULES_FILE="/etc/ufw/before.rules"
 
@@ -56,3 +56,8 @@ privateKey=""
 publicKey=""
 inboundid=""
 DOMAIN=""
+
+#fail2ban
+fail2ban_max_retry=3
+fail2ban_ban_time=43200
+fail2ban_find_time=600
